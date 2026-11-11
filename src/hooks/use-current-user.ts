@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useState } from "react";
+import type { User } from "@supabase/supabase-js";
 import { supabase } from "@/integrations/supabase/client";
 
 export const PROFILE_UPDATED_EVENT = "verdiqy:profile-updated";
@@ -35,10 +36,13 @@ export function useCurrentUser(): CurrentUserInfo | null {
 
   useEffect(() => {
     let cancelled = false;
+    let revision = 0;
+    let authChanged = false;
+    let profileTimer: ReturnType<typeof setTimeout> | undefined;
 
-    async function load() {
-      const { data } = await supabase.auth.getUser();
-      const user = data.user;
+    function showUser(user: User | null) {
+      const currentRevision = ++revision;
+      clearTimeout(profileTimer);
       if (!user) {
         if (!cancelled) setInfo(null);
         return;
@@ -56,6 +60,27 @@ export function useCurrentUser(): CurrentUserInfo | null {
         (typeof meta.picture === "string" && meta.picture) ||
         null;
 
+      // Session metadata is enough for display; never wait for remote profile
+      // or storage requests to acknowledge a successful sign-in.
+      if (!cancelled) {
+        setInfo((previous) => ({
+          name,
+          initials: computeInitials(name),
+          email: user.email ?? null,
+          avatarUrl,
+          ...(previous?.email === user.email ? previous : {}),
+        }));
+      }
+
+      // Auth callbacks run while the auth lock is held. Start remote work in
+      // a later task, rather than calling auth-dependent APIs in the callback.
+      profileTimer = setTimeout(() => {
+        void loadProfile().catch(() => {
+          // Keep the signed-in identity visible if profile enrichment fails.
+        });
+      }, 0);
+
+      async function loadProfile() {
       // The profile row is the source of truth: it holds uploaded avatars
       // (stored as a private storage path) and the edited display name.
       const { data: profile } = await supabase
@@ -79,7 +104,7 @@ export function useCurrentUser(): CurrentUserInfo | null {
         avatarUrl = profile.cf_title_photo;
       }
 
-      if (!cancelled) {
+      if (!cancelled && revision === currentRevision) {
         setInfo({
           name,
           initials: computeInitials(name),
@@ -87,17 +112,23 @@ export function useCurrentUser(): CurrentUserInfo | null {
           avatarUrl,
         });
       }
+      }
     }
 
-    load();
-    const { data: sub } = supabase.auth.onAuthStateChange((event) => {
-      if (event === "SIGNED_IN" || event === "SIGNED_OUT" || event === "USER_UPDATED") {
-        load();
+    const { data: sub } = supabase.auth.onAuthStateChange((event, session) => {
+      if (event === "INITIAL_SESSION" || event === "SIGNED_IN" || event === "SIGNED_OUT" || event === "USER_UPDATED") {
+        authChanged = true;
+        showUser(session?.user ?? null);
       }
     });
+    void supabase.auth.getSession().then(({ data }) => {
+      if (!cancelled && !authChanged) showUser(data.session?.user ?? null);
+    }).catch(() => undefined);
     window.addEventListener(PROFILE_UPDATED_EVENT, bump);
     return () => {
       cancelled = true;
+      revision++;
+      clearTimeout(profileTimer);
       sub.subscription.unsubscribe();
       window.removeEventListener(PROFILE_UPDATED_EVENT, bump);
     };
