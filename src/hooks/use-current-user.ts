@@ -47,6 +47,8 @@ export function useCurrentUser(): CurrentUserInfo | null {
         if (!cancelled) setInfo(null);
         return;
       }
+      const accountId = user.id;
+      const accountEmail = user.email ?? null;
       const meta = (user.user_metadata ?? {}) as Record<string, unknown>;
       const metaName =
         (typeof meta.display_name === "string" && meta.display_name) ||
@@ -86,7 +88,7 @@ export function useCurrentUser(): CurrentUserInfo | null {
       const { data: profile } = await supabase
         .from("profiles")
         .select("display_name, avatar_url, cf_title_photo")
-        .eq("id", user.id)
+        .eq("id", accountId)
         .maybeSingle();
 
       if (profile?.display_name) name = profile.display_name;
@@ -108,7 +110,7 @@ export function useCurrentUser(): CurrentUserInfo | null {
         setInfo({
           name,
           initials: computeInitials(name),
-          email: user.email ?? null,
+          email: accountEmail,
           avatarUrl,
         });
       }
