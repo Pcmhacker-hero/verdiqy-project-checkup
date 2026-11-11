@@ -30,3 +30,4 @@ use the editor.
 <!-- LOVABLE:END -->
 
 - Codeforces photo proxy uses the main-site /userpic/ copy and the original photo host, preserving the uploaded path because the dedicated host can be unavailable independently.
+- Account display uses session metadata immediately and enriches it asynchronously from profiles; session metadata is display-only, not authorization, and stale profile requests must not restore signed-out identity.
