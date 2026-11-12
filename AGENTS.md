@@ -33,3 +33,4 @@ use the editor.
 - Codeforces search and comparison share a keyed avatar component that tries official hosts directly before the proxy and retries transient failures, because preview gateways can block ordinary proxy image requests.
 - Account display is owned by a root-scoped CurrentUserProvider, with one session subscription and profile enrichment per identity; consumers share it across route changes, pending sessions never render Guest, and metadata is never authorization.
 - Sidebar keyboard shortcuts are matched by the browser-safe sidebar-shortcut helper and handled in AppShell, keeping desktop collapse and mobile drawer toggles together without intercepting text editing.
+- Search uses the root-scoped current-user readiness for display routing and a tested search-access decision; server authentication remains authoritative, avoiding duplicate session reads and stalled signed-out screens.
