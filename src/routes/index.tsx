@@ -1124,7 +1124,7 @@ function MasteryCard() {
   ];
   return (
     <div>
-      <div className="group relative rounded-2xl border border-[rgb(var(--lp-ink)/12%)] bg-[var(--lp-panel)] p-6 shadow-[0_20px_60px_-25px_rgba(0,0,0,0.55)]">
+      <div className="group relative rounded-2xl border border-[rgb(var(--lp-ink)/12%)] bg-[var(--lp-panel)] p-6 shadow-[0_20px_60px_-25px_rgba(0,0,0,0.55)] transition-transform duration-300 hover:-translate-y-1">
 
         <div
           className="relative flex items-center justify-between border-b border-[rgb(var(--lp-ink)/10%)] pb-3"
@@ -1138,6 +1138,7 @@ function MasteryCard() {
             </div>
           </div>
           <div className="rounded-full bg-[rgb(var(--lp-ink)/10%)] px-2.5 py-1 text-[10px] uppercase tracking-widest text-[rgb(var(--lp-ink)/70%)]">
+            <span className="mr-1.5 inline-block size-1.5 animate-pulse rounded-full bg-[rgb(120,150,255)] align-middle" />
             live
           </div>
         </div>
@@ -1145,16 +1146,19 @@ function MasteryCard() {
         <div
           className="relative mt-4 space-y-3"
         >
-          {topics.map((t) => (
+          {topics.map((t, i) => (
             <div key={t.name}>
               <div className="flex justify-between text-xs">
                 <span className="text-[rgb(var(--lp-ink)/85%)]">{t.name}</span>
                 <span className="font-mono text-[rgb(var(--lp-ink)/60%)]">{t.pct}%</span>
               </div>
               <div className="mt-1.5 h-2 w-full overflow-hidden rounded-full bg-[rgb(var(--lp-ink)/8%)] shadow-[inset_0_1px_2px_rgba(0,0,0,0.15)]">
-                <div
+                <motion.div
                   className="h-full rounded-full bg-gradient-to-r from-[rgb(120,150,255)] via-[rgb(150,180,255)] to-[rgb(200,220,255)] shadow-[0_0_20px_rgba(120,150,255,0.6)]"
-                  style={{ width: `${t.pct}%` }}
+                  initial={{ width: 0 }}
+                  whileInView={{ width: `${t.pct}%` }}
+                  viewport={{ once: true, amount: 0.5 }}
+                  transition={{ duration: 0.9, delay: 0.1 + i * 0.08, ease: "easeOut" }}
                 />
               </div>
             </div>
