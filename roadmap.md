@@ -4,6 +4,6 @@
 - [x] Verify signed-in navigation, images, and regression tests.
 
 # Functionality audit and independent-hosting handoff
-- [ ] Run regression tests and signed-in checks across main pages and core actions.
-- [ ] Fix reproducible issues and verify the affected flows.
-- [ ] Deliver a Lovable-removal prompt with migration safeguards and clearly identify unverified services.
+- [x] Run regression tests and signed-in checks across main pages and core actions.
+- [x] Fix reproducible issues and verify the affected flows.
+- [x] Deliver a Lovable-removal prompt with migration safeguards and clearly identify unverified services.
