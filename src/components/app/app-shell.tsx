@@ -1,5 +1,5 @@
 import { Link, useNavigate, useRouterState } from "@tanstack/react-router";
-import logoAsset from "@/assets/logo.png.asset.json";
+import logoImage from "@/assets/logo-small.webp";
 import { FloatingBugButton } from "@/components/app/floating-bug-button";
 import { useServerFn } from "@tanstack/react-start";
 import { useEffect, useMemo, useRef, useState, type FormEvent, type MouseEvent, type ReactNode } from "react";
@@ -485,7 +485,7 @@ function Brand({ onNavigate }: { onNavigate?: () => void }) {
       className="flex h-14 items-center gap-2 px-4 rounded-md transition-colors hover:bg-surface-muted focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
     >
       <div className="relative size-7 overflow-hidden rounded-xl shadow-[0_6px_20px_-4px_rgba(56,132,255,0.55)]">
-        <img src={logoAsset.url} alt="Verdiqy logo" className="size-full object-cover" />
+        <img src={logoImage} width={64} height={64} alt="Verdiqy logo" className="size-full object-cover" />
         <span className="pointer-events-none absolute inset-0 rounded-xl ring-1 ring-inset ring-white/20" />
       </div>
       <div className="flex min-w-0 flex-col leading-tight">
@@ -1059,7 +1059,7 @@ function Header({
             className="flex h-11 items-center gap-2.5 pl-4 pr-4 text-base font-semibold tracking-tight transition-colors hover:bg-surface-muted focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
           >
             <span className="relative size-7 overflow-hidden rounded-md shadow-[0_4px_14px_-4px_rgba(56,132,255,0.5)]">
-              <img src={logoAsset.url} alt="Verdiqy logo" className="size-full object-cover" />
+              <img src={logoImage} width={64} height={64} alt="Verdiqy logo" className="size-full object-cover" />
             </span>
             Verdiqy
           </Link>
