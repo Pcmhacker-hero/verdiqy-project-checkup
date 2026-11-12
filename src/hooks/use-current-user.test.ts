@@ -21,7 +21,7 @@ vi.mock("@/integrations/supabase/client", () => ({
 }));
 
 import { createElement, type ReactNode } from "react";
-import { CurrentUserProvider, useCurrentUser, useCurrentUserStatus } from "./use-current-user";
+import { CurrentUserProvider, notifyProfileUpdated, useCurrentUser, useCurrentUserStatus } from "./use-current-user";
 
 const wrapper = ({ children }: { children: ReactNode }) => createElement(CurrentUserProvider, null, children);
 
@@ -48,6 +48,25 @@ describe("immediate account display", () => {
     const { result } = renderHook(() => useCurrentUser(), { wrapper });
     act(() => mocks.callback?.("SIGNED_IN", { user }));
     expect(result.current?.name).toBe("Prakash Meena");
+  });
+
+  it("switches display identity immediately when a different account signs in", async () => {
+    const { result } = renderHook(() => useCurrentUser(), { wrapper });
+    await waitFor(() => expect(result.current?.name).toBe("Prakash Meena"));
+    act(() => mocks.callback?.("SIGNED_IN", {
+      user: { id: "account-b", email: "second@example.test", user_metadata: { display_name: "Second User" } },
+    }));
+    expect(result.current?.name).toBe("Second User");
+    expect(result.current?.email).toBe("second@example.test");
+  });
+
+  it("refreshes the shared name after a profile edit", async () => {
+    mocks.maybeSingle.mockResolvedValue({ data: { display_name: "Prakash Meena" } });
+    const { result } = renderHook(() => useCurrentUser(), { wrapper });
+    await waitFor(() => expect(mocks.maybeSingle).toHaveBeenCalledTimes(1));
+    mocks.maybeSingle.mockResolvedValue({ data: { display_name: "Updated Name" } });
+    act(() => notifyProfileUpdated());
+    await waitFor(() => expect(result.current?.name).toBe("Updated Name"));
   });
 
   it("does not restore the account from a late profile response after sign-out", async () => {

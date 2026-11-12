@@ -491,6 +491,7 @@ function scheduleSidebarClose(onNavigate?: () => void) {
 }
 
 function Brand({ onNavigate }: { onNavigate?: () => void }) {
+  const { user, ready } = useCurrentUserStatus();
   return (
     <Link
       to="/"
@@ -504,7 +505,9 @@ function Brand({ onNavigate }: { onNavigate?: () => void }) {
       </div>
       <div className="flex min-w-0 flex-col leading-tight">
         <span className="truncate text-sm font-semibold tracking-tight">Verdiqy</span>
-        <span className="truncate text-2xs text-muted-foreground">alex's workspace</span>
+        <span className="truncate text-2xs text-muted-foreground">
+          {user ? `${user.name}'s workspace` : ready ? "Guest workspace" : <Skeleton className="h-3 w-24" />}
+        </span>
       </div>
     </Link>
 
