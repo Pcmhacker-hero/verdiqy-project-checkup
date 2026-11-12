@@ -14,11 +14,10 @@ import {
 } from "recharts";
 
 import { AppShell } from "@/components/app/app-shell";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { cn } from "@/lib/utils";
-import { cfAvatarUrl } from "@/lib/cf-avatar";
+import { CodeforcesAvatar } from "@/components/app/cf-avatar";
 
 export const Route = createFileRoute("/compare")({
   head: () => ({
@@ -276,10 +275,7 @@ function ProfileCard({ stats, onClear }: { stats: ProfileStats; onClear: () => v
   return (
     <div>
       <div className="flex items-start gap-3">
-        <Avatar className="size-14 border border-border">
-          <AvatarImage src={cfAvatarUrl(user.titlePhoto ?? user.avatar)} alt={user.handle} />
-          <AvatarFallback>{user.handle.slice(0, 2).toUpperCase()}</AvatarFallback>
-        </Avatar>
+        <CodeforcesAvatar handle={user.handle} titlePhoto={user.titlePhoto} avatar={user.avatar} className="size-14 border border-border" />
         <div className="min-w-0 flex-1">
           <div className="flex items-center gap-2">
             <a
