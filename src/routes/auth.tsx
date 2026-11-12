@@ -28,6 +28,8 @@ export const Route = createFileRoute("/auth")({
         property: "og:description",
         content: "Click Start Next. Solve. Repeat. Verdiqy keeps picking the exact problem you should do next.",
       },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary_large_image" },
     ],
   }),
   validateSearch: (raw: Record<string, unknown>): AuthSearch => ({

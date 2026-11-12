@@ -57,6 +57,8 @@ export const Route = createFileRoute("/_authenticated/admin")({
         content:
           "Operate Verdiqy end-to-end: growth, MRR, cohorts, incidents, and feature rollouts — all in one place.",
       },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary_large_image" },
     ],
   }),
   component: AdminPage,

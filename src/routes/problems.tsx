@@ -70,6 +70,8 @@ export const Route = createFileRoute("/problems")({
         content:
           "Turn any Codeforces profile into a personalised practice journey — solved history, topic mastery, and AI-generated sheets.",
       },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary_large_image" },
     ],
   }),
   component: ProblemsPage,

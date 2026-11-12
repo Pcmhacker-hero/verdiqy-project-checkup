@@ -54,6 +54,8 @@ export const Route = createFileRoute("/contests")({
         content:
           "One calendar for every competitive programming contest. Live countdowns, reminders, Google Calendar export, AI prep plan.",
       },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary_large_image" },
     ],
   }),
   component: ContestsPage,
