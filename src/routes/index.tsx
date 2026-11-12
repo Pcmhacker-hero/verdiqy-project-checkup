@@ -1,6 +1,6 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { Button } from "@/components/ui/button";
-import { motion } from "framer-motion";
+import { motion, useReducedMotion } from "framer-motion";
 import { ThemeToggle } from "@/components/theme-toggle";
 import { useCurrentUser } from "@/hooks/use-current-user";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
@@ -934,6 +934,7 @@ function Compare() {
 }
 
 function Integrations() {
+  const reduceMotion = useReducedMotion();
   const items = [
     { icon: Code2, name: "Codeforces" },
     { icon: Trophy, name: "AtCoder" },
@@ -963,16 +964,20 @@ function Integrations() {
         </div>
 
         <div className="mt-12 grid grid-cols-2 gap-px overflow-hidden rounded-2xl border border-[rgb(var(--lp-ink)/10%)] bg-[rgb(var(--lp-ink)/10%)] sm:grid-cols-3 md:grid-cols-5">
-          {items.map((it) => (
-            <div
+          {items.map((it, index) => (
+            <motion.div
               key={it.name}
-              className="flex flex-col items-center justify-center gap-3 bg-[var(--lp-elev)] py-10 text-center transition-colors hover:bg-[var(--lp-elev)]"
+              initial={reduceMotion ? false : { opacity: 0, y: 12 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, amount: 0.3 }}
+              transition={{ duration: 0.45, delay: reduceMotion ? 0 : index * 0.07, ease: [0.22, 1, 0.36, 1] }}
+              className="group flex flex-col items-center justify-center gap-3 bg-[var(--lp-elev)] py-10 text-center transition-colors duration-300 hover:bg-accent/30"
             >
-              <it.icon className="size-6 text-[rgb(var(--lp-ink)/75%)]" />
-              <span className="text-xs uppercase tracking-widest text-[rgb(var(--lp-ink)/60%)]">
+              <it.icon className="size-6 text-[rgb(var(--lp-ink)/75%)] transition-transform duration-300 ease-out motion-safe:group-hover:-translate-y-1 motion-safe:group-hover:scale-110" />
+              <span className="text-xs uppercase tracking-widest text-[rgb(var(--lp-ink)/60%)] transition-transform duration-300 ease-out motion-safe:group-hover:-translate-y-0.5">
                 {it.name}
               </span>
-            </div>
+            </motion.div>
           ))}
         </div>
       </div>
