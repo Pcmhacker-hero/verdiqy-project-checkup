@@ -26,8 +26,8 @@ import {
   MessageSquare,
   Rocket,
 } from "lucide-react";
-import heroImage from "@/assets/home-hero.jpg";
-import logoAsset from "@/assets/logo.png.asset.json";
+import heroImage from "@/assets/home-hero.webp";
+import logoImage from "@/assets/logo-small.webp";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -48,7 +48,9 @@ export const Route = createFileRoute("/")({
           "Curated sheets, problem tracking, contest calendars and video walkthroughs — an organized workspace for competitive programmers.",
       },
       { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary_large_image" },
     ],
+    links: [{ rel: "preload", as: "image", href: heroImage, fetchpriority: "high" }],
   }),
   component: LandingPage,
 });
@@ -109,14 +111,13 @@ function Hero() {
     <section className="landing-hero relative overflow-hidden">
       {/* Hero background */}
       <div aria-hidden className="absolute inset-[-4%]">
-        <motion.img
+        <img
           src={heroImage}
           alt=""
           width={1920}
           height={1280}
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 0.8, ease: "easeOut" }}
+          loading="eager"
+          fetchPriority="high"
           className="absolute inset-0 h-full w-full scale-[1.06] object-cover"
         />
 
@@ -153,7 +154,7 @@ function Hero() {
           className="inline-flex items-center gap-2 rounded-full bg-white/95 py-1 pl-1 pr-4 text-sm font-semibold text-slate-900 backdrop-blur"
         >
           <span aria-hidden="true" className="relative grid size-6 place-items-center overflow-hidden rounded-full shadow-[0_6px_20px_-4px_rgba(56,132,255,0.55)]">
-            <img src={logoAsset.url} alt="" className="size-full object-cover" />
+            <img src={logoImage} width={64} height={64} alt="" className="size-full object-cover" />
             <span className="pointer-events-none absolute inset-0 rounded-full ring-1 ring-inset ring-white/20" />
           </span>
           Verdiqy
@@ -620,7 +621,7 @@ function SiteFooter() {
       <div className="mx-auto flex max-w-6xl flex-col items-start justify-between gap-6 px-6 py-10 text-sm text-[rgb(var(--lp-ink)/60%)] sm:px-10 md:flex-row md:items-center">
         <div className="flex items-center gap-2 text-[rgb(var(--lp-ink))]">
           <span aria-hidden="true" className="relative grid size-6 place-items-center overflow-hidden rounded-full shadow-[0_6px_20px_-4px_rgba(56,132,255,0.55)]">
-            <img src={logoAsset.url} alt="" className="size-full object-cover" />
+            <img src={logoImage} width={64} height={64} alt="" className="size-full object-cover" />
           </span>
           <span className="font-semibold">Verdiqy</span>
           <span className="text-[rgb(var(--lp-ink)/40%)]">— practice, tracked.</span>

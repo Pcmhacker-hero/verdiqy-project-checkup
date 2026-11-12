@@ -28,6 +28,10 @@ export const Route = createFileRoute("/compare")({
         content:
           "Compare two Codeforces profiles side by side — rank, rating, contests, and problems solved.",
       },
+      { property: "og:title", content: "Compare \u00b7 Verdiqy" },
+      { property: "og:description", content: "Compare two Codeforces profiles side by side \u2014 rank, rating, contests, and problems solved." },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary_large_image" },
     ],
   }),
   component: ComparePage,

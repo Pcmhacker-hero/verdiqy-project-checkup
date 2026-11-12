@@ -8,12 +8,13 @@ import {
   HeadContent,
   Scripts,
 } from "@tanstack/react-router";
-import { useEffect, useState, type ReactNode } from "react";
+import { useCallback, useEffect, useState, type ReactNode } from "react";
+import type { AuthChangeEvent } from "@supabase/supabase-js";
+import { CurrentUserProvider } from "@/hooks/use-current-user";
 
 import appCss from "../styles.css?url";
 import { Toaster } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
-import { supabase } from "@/integrations/supabase/client";
 import { useSheetAutoMigration } from "@/hooks/use-sheets";
 import { CommandMenu } from "@/components/app/command-menu";
 
@@ -107,8 +108,6 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { name: "twitter:card", content: "summary_large_image" },
       { name: "twitter:title", content: "Verdiqy — Practice tools for competitive programmers" },
       { name: "twitter:description", content: "Curated sheets, problem tracking, contest calendars and video walkthroughs — an organized workspace for competitive programmers." },
-      { property: "og:image", content: "/icon-512.png" },
-      { name: "twitter:image", content: "/icon-512.png" },
     ],
     links: [
       { rel: "stylesheet", href: appCss },
@@ -161,17 +160,18 @@ function RootComponent() {
   const { queryClient } = Route.useRouteContext();
   const router = useRouter();
 
-  useEffect(() => {
-    const { data: sub } = supabase.auth.onAuthStateChange((event) => {
-      if (event !== "SIGNED_IN" && event !== "SIGNED_OUT" && event !== "USER_UPDATED") return;
-      router.invalidate();
-      if (event !== "SIGNED_OUT") queryClient.invalidateQueries();
-    });
-    return () => sub.subscription.unsubscribe();
+  const onIdentityChange = useCallback((event: AuthChangeEvent) => {
+    if (event === "SIGNED_OUT") {
+      void queryClient.cancelQueries();
+      queryClient.clear();
+    }
+    void router.invalidate();
+    if (event !== "SIGNED_OUT") void queryClient.invalidateQueries();
   }, [router, queryClient]);
 
   return (
     <QueryClientProvider client={queryClient}>
+      <CurrentUserProvider onIdentityChange={onIdentityChange}>
       <TooltipProvider delayDuration={150} skipDelayDuration={300}>
         {/* Required: nested routes render here. Removing <Outlet /> breaks all child routes. */}
         <SheetMigrationRunner />
@@ -179,6 +179,7 @@ function RootComponent() {
         <GlobalCommandPalette />
         <Toaster />
       </TooltipProvider>
+      </CurrentUserProvider>
     </QueryClientProvider>
   );
 }

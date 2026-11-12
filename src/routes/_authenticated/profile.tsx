@@ -100,6 +100,10 @@ export const Route = createFileRoute("/_authenticated/profile")({
         content:
           "Your competitive programming profile: link your Codeforces handle, upload an avatar, and track rating evolution, contests, topics and habits.",
       },
+      { property: "og:title", content: "Your profile \u00b7 Verdiqy" },
+      { property: "og:description", content: "Your competitive programming profile: link your Codeforces handle, upload an avatar, and track rating evolution, contests, topics and habits." },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary_large_image" },
     ],
   }),
   component: ProfilePage,

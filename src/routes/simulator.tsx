@@ -39,6 +39,10 @@ export const Route = createFileRoute("/simulator")({
         content:
           "Build your own contest — pick source, rating range, topics, and duration. Generate from AI, sheets, bookmarks, or any Codeforces handle.",
       },
+      { property: "og:title", content: "Custom Contest \u00b7 Verdiqy" },
+      { property: "og:description", content: "Build your own contest \u2014 pick source, rating range, topics, and duration. Generate from AI, sheets, bookmarks, or any Codeforces handle." },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary_large_image" },
     ],
   }),
   component: CustomContestPage,

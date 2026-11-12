@@ -31,4 +31,4 @@ use the editor.
 
 - Codeforces photo proxy uses the main-site /userpic/ copy and the original photo host, preserving the uploaded path because the dedicated host can be unavailable independently.
 - Codeforces search and comparison share a keyed avatar component that tries official hosts directly before the proxy and retries transient failures, because preview gateways can block ordinary proxy image requests.
-- Account display uses session metadata immediately and enriches it asynchronously from profiles; session metadata is display-only, not authorization, and stale profile requests must not restore signed-out identity.
+- Account display is owned by a root-scoped CurrentUserProvider, with one session subscription and profile enrichment per identity; consumers share it across route changes, pending sessions never render Guest, and metadata is never authorization.

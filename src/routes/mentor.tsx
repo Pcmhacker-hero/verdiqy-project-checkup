@@ -65,6 +65,10 @@ export const Route = createFileRoute("/mentor")({
         content:
           "A private competitive programming coach that reads your practice history and gives you the next specific move.",
       },
+      { property: "og:title", content: "Mentor \u00b7 Verdiqy" },
+      { property: "og:description", content: "A private competitive programming coach that reads your practice history and gives you the next specific move." },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary_large_image" },
     ],
   }),
   component: MentorPage,

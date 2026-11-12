@@ -18,7 +18,15 @@ function Photo({ handle, titlePhoto, avatar, className }: Props) {
   const sources = useMemo(() => cfAvatarCandidates(titlePhoto, avatar), [titlePhoto, avatar]);
   const [index, setIndex] = useState(0);
   const [attempt, setAttempt] = useState(0);
+  const [loaded, setLoaded] = useState(false);
   const source = sources[index];
+
+  useEffect(() => {
+    if (!source || loaded) return;
+    // A stalled official host must not hold up every fallback indefinitely.
+    const timer = setTimeout(() => setIndex((value) => value + 1), 3000);
+    return () => clearTimeout(timer);
+  }, [source, attempt, loaded]);
 
   useEffect(() => {
     if (source || sources.length === 0 || attempt >= 2) return;
@@ -36,8 +44,11 @@ function Photo({ handle, titlePhoto, avatar, className }: Props) {
           key={`${source}:${attempt}`}
           src={source}
           alt={handle}
+          loading="eager"
+          decoding="async"
           className="size-full object-cover"
           referrerPolicy="no-referrer"
+          onLoad={() => setLoaded(true)}
           onError={() => setIndex((value) => value + 1)}
         />
       ) : (
