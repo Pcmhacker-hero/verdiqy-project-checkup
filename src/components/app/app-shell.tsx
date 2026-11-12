@@ -60,6 +60,7 @@ import { z } from "zod";
 import { ThemeToggle } from "@/components/theme-toggle";
 import { supabase } from "@/integrations/supabase/client";
 import { useQueryClient } from "@tanstack/react-query";
+import { isSidebarShortcut } from "@/lib/sidebar-shortcut";
 
 
 interface NavItem {
@@ -227,6 +228,19 @@ export function AppShell({ children, breadcrumb, actions }: AppShellProps) {
         return;
       }
       if (isTypingTarget(e.target)) return;
+
+      if (isSidebarShortcut(e)) {
+        e.preventDefault();
+        if (window.matchMedia("(min-width: 768px)").matches) {
+          setSidebarCollapsed((collapsed) => {
+            rememberSidebarCollapsed(!collapsed);
+            return !collapsed;
+          });
+        } else {
+          setMobileNavOpen((open) => !open);
+        }
+        return;
+      }
 
       if (e.key === "/") {
         e.preventDefault();
@@ -1171,6 +1185,7 @@ function ShortcutsDialog({
         label: "General",
         items: [
           { keys: ["⌘", "K"], label: "Open command menu" },
+          { keys: ["⌘ / Ctrl", "B"], label: "Open / close sidebar" },
           { keys: ["/"], label: "Search or jump to…" },
           { keys: ["?"], label: "Show this dialog" },
           { keys: ["Esc"], label: "Close dialog / menu" },
