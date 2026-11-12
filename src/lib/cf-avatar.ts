@@ -19,3 +19,22 @@ export function cfAvatarUrl(url: string | null | undefined): string | undefined 
   if (!url) return undefined;
   return `/api/public/cf-avatar?url=${encodeURIComponent(url)}`;
 }
+
+// Prefer official images directly: private preview gateways can reject image
+// proxy requests even though the same public endpoint works after publishing.
+export function cfAvatarCandidates(titlePhoto?: string | null, avatar?: string | null): string[] {
+  const photos = [titlePhoto, avatar].filter((photo): photo is string => Boolean(photo));
+  const uploaded = photos.filter((photo) => !/\/no-(title|avatar)\./.test(photo));
+  const ordered = [...uploaded, ...photos];
+  const candidates: string[] = [];
+  for (const photo of ordered) {
+    try {
+      candidates.push(...cfAvatarSources(photo));
+      const proxy = cfAvatarUrl(photo);
+      if (proxy) candidates.push(proxy);
+    } catch {
+      // Never send an untrusted image host to the browser or proxy.
+    }
+  }
+  return [...new Set(candidates)];
+}

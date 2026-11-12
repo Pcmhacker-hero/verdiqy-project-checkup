@@ -48,7 +48,7 @@ import { Input } from "@/components/ui/input";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Kbd } from "@/components/ds/kbd";
 import { cn } from "@/lib/utils";
-import { cfAvatarUrl } from "@/lib/cf-avatar";
+import { CodeforcesAvatar } from "@/components/app/cf-avatar";
 import {
   getCodeforcesJourney,
   type CFJourney,
@@ -610,20 +610,11 @@ function ProfileHeader({
     >
       <div className="flex flex-col gap-5 md:flex-row md:items-start md:justify-between">
         <div className="flex items-start gap-4">
-          <img
-            src={cfAvatarUrl(user.titlePhoto || user.avatar)}
-            alt={user.handle}
+          <CodeforcesAvatar
+            handle={user.handle}
+            titlePhoto={user.titlePhoto}
+            avatar={user.avatar}
             className="size-16 rounded-full border-2 border-border object-cover md:size-20"
-            referrerPolicy="no-referrer"
-            onError={(e) => {
-              const img = e.currentTarget as HTMLImageElement;
-              if (img.dataset["fallback"]) return;
-              img.dataset["fallback"] = "1";
-              const letter = (user.handle?.[0] ?? "?").toUpperCase();
-              img.src = `data:image/svg+xml;utf8,${encodeURIComponent(
-                `<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 80 80'><rect width='80' height='80' fill='#6366f1'/><text x='50%' y='54%' dominant-baseline='middle' text-anchor='middle' font-family='sans-serif' font-size='36' font-weight='700' fill='#fff'>${letter}</text></svg>`,
-              )}`;
-            }}
           />
           <div className="min-w-0">
             <div className="flex flex-wrap items-center gap-2">
