@@ -1,3 +1,6 @@
+import codeforcesMark from "@/assets/codeforces-mark.png.asset.json";
+import codechefMark from "@/assets/codechef-mark.svg.asset.json";
+import leetcodeMark from "@/assets/leetcode-mark.png.asset.json";
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { supabase } from "@/integrations/supabase/client";
 import { useEffect, useMemo, useRef, useState } from "react";
@@ -94,7 +97,7 @@ const PLATFORM_META: Record<
     hex: "#38bdf8",
     short: "CF",
     icon: "CF",
-    logo: "https://codeforces.org/s/0/favicon-32x32.png",
+    logo: codeforcesMark.url,
     tileBg: "bg-sky-950/70",
   },
   CodeChef: {
@@ -104,7 +107,7 @@ const PLATFORM_META: Record<
     hex: "#f59e0b",
     short: "CC",
     icon: "CC",
-    logo: "https://www.codechef.com/favicon.ico",
+    logo: codechefMark.url,
     tileBg: "bg-amber-950/70",
   },
   LeetCode: {
@@ -114,7 +117,7 @@ const PLATFORM_META: Record<
     hex: "#f59e0b",
     short: "LC",
     icon: "LC",
-    logo: "https://leetcode.com/favicon-32x32.png",
+    logo: leetcodeMark.url,
     tileBg: "bg-neutral-900/80",
   },
 };
@@ -933,7 +936,10 @@ function CalendarView({
                       <img
                         src={meta.logo}
                         alt=""
-                        loading="lazy"
+                        loading="eager"
+                        decoding="async"
+                        width={16}
+                        height={16}
                         className="size-4 object-contain"
                         onError={(e) => {
                           const el = e.currentTarget;

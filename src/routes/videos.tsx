@@ -21,6 +21,10 @@ export const Route = createFileRoute("/videos")({
         content:
           "Look up any Codeforces problem by ID and pull the best YouTube walkthroughs, one at a time.",
       },
+      { property: "og:title", content: "Video Solutions \u00b7 Verdiqy" },
+      { property: "og:description", content: "Look up any Codeforces problem by ID and pull the best YouTube walkthroughs, one at a time." },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary_large_image" },
     ],
   }),
   component: VideosPage,

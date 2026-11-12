@@ -58,6 +58,10 @@ export const Route = createFileRoute("/cheatsheets")({
         content:
           "Your personal cheat library — saved custom practice sheets plus visual notes on core competitive programming techniques.",
       },
+      { property: "og:title", content: "Cheat Library \u00b7 Verdiqy" },
+      { property: "og:description", content: "Your personal cheat library \u2014 saved custom practice sheets plus visual notes on core competitive programming techniques." },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary_large_image" },
     ],
   }),
   component: CheatsheetsPage,

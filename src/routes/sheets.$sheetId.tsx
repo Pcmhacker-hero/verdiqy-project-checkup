@@ -32,6 +32,10 @@ export const Route = createFileRoute("/sheets/$sheetId")({
         content:
           "Work through a custom practice sheet — filter, check off progress, jot notes, and bookmark problems for your profile.",
       },
+      { property: "og:title", content: "Sheet \u00b7 Verdiqy" },
+      { property: "og:description", content: "Work through a custom practice sheet \u2014 filter, check off progress, jot notes, and bookmark problems for your profile." },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary_large_image" },
     ],
   }),
   component: SheetDetailPage,
