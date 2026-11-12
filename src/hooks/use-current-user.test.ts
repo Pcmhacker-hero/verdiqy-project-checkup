@@ -20,7 +20,10 @@ vi.mock("@/integrations/supabase/client", () => ({
   },
 }));
 
-import { useCurrentUser } from "./use-current-user";
+import { createElement, type ReactNode } from "react";
+import { CurrentUserProvider, useCurrentUser, useCurrentUserStatus } from "./use-current-user";
+
+const wrapper = ({ children }: { children: ReactNode }) => createElement(CurrentUserProvider, null, children);
 
 const user = { id: "account-a", email: "account@example.test", user_metadata: { display_name: "Prakash Meena" } };
 
@@ -33,7 +36,7 @@ describe("immediate account display", () => {
   });
 
   it("shows the signed-in account before the profile request finishes", async () => {
-    const { result } = renderHook(() => useCurrentUser());
+    const { result } = renderHook(() => useCurrentUser(), { wrapper });
     await waitFor(() => expect(result.current?.name).toBe("Prakash Meena"));
     expect(result.current?.email).toBe("account@example.test");
     await waitFor(() => expect(mocks.maybeSingle).toHaveBeenCalled());
@@ -42,7 +45,7 @@ describe("immediate account display", () => {
 
   it("uses the sign-in event immediately without waiting for session retrieval", () => {
     mocks.getSession.mockImplementation(() => new Promise(() => {}));
-    const { result } = renderHook(() => useCurrentUser());
+    const { result } = renderHook(() => useCurrentUser(), { wrapper });
     act(() => mocks.callback?.("SIGNED_IN", { user }));
     expect(result.current?.name).toBe("Prakash Meena");
   });
@@ -50,10 +53,29 @@ describe("immediate account display", () => {
   it("does not restore the account from a late profile response after sign-out", async () => {
     let resolveProfile: ((value: unknown) => void) | undefined;
     mocks.maybeSingle.mockImplementation(() => new Promise((resolve) => { resolveProfile = resolve; }));
-    const { result } = renderHook(() => useCurrentUser());
+    const { result } = renderHook(() => useCurrentUser(), { wrapper });
     await waitFor(() => expect(mocks.maybeSingle).toHaveBeenCalled());
     act(() => mocks.callback?.("SIGNED_OUT", null));
     await act(async () => { resolveProfile?.({ data: { display_name: "Old profile" } }); });
     expect(result.current).toBeNull();
+  });
+
+  it("distinguishes an unresolved session from a signed-out guest", async () => {
+    mocks.getSession.mockImplementation(() => new Promise(() => {}));
+    const { result } = renderHook(() => useCurrentUserStatus(), { wrapper });
+    expect(result.current.ready).toBe(false);
+    act(() => mocks.callback?.("INITIAL_SESSION", null));
+    expect(result.current).toEqual({ user: null, ready: true });
+  });
+
+  it("shares one account and one profile request between sidebar consumers", async () => {
+    const { result, rerender } = renderHook(() => [useCurrentUser(), useCurrentUser()], { wrapper });
+    await waitFor(() => expect(result.current[0]?.name).toBe("Prakash Meena"));
+    await waitFor(() => expect(mocks.maybeSingle).toHaveBeenCalledTimes(1));
+    rerender();
+    act(() => mocks.callback?.("SIGNED_IN", { user }));
+    expect(result.current[1]?.name).toBe("Prakash Meena");
+    expect(mocks.getSession).toHaveBeenCalledTimes(1);
+    expect(mocks.maybeSingle).toHaveBeenCalledTimes(1);
   });
 });

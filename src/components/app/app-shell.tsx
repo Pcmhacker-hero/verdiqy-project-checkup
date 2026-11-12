@@ -53,7 +53,7 @@ import { CommandMenu } from "@/components/app/command-menu";
 import { DemoBanner } from "@/components/app/demo-banner";
 import { cn } from "@/lib/utils";
 import { useIsAdmin } from "@/hooks/use-is-admin";
-import { useCurrentUser } from "@/hooks/use-current-user";
+import { useCurrentUser, useCurrentUserStatus } from "@/hooks/use-current-user";
 import { submitBugReport } from "@/lib/bug-report.functions";
 import { logBugReportEvent } from "@/lib/bug-report-events.functions";
 import { z } from "zod";
@@ -519,13 +519,13 @@ function SidebarFooter({
   onReportBug,
   onNavigate,
 }: { onOpenShortcuts?: () => void; isAdmin?: boolean; onReportBug?: () => void; onNavigate?: () => void } = {}) {
-  const user = useCurrentUser();
+  const { user, ready } = useCurrentUserStatus();
   const queryClient = useQueryClient();
   const [signingOut, setSigningOut] = useState(false);
   const signingOutRef = useRef(false);
   const redirectedRef = useRef(false);
-  const name = user?.name ?? "Guest";
-  const initials = user?.initials ?? "?";
+  const name = user?.name ?? (ready ? "Guest" : "");
+  const initials = user?.initials ?? (ready ? "?" : "");
 
   const finishSignOut = () => {
     if (redirectedRef.current) return;
@@ -610,7 +610,9 @@ function SidebarFooter({
             </AvatarFallback>
           </Avatar>
           <div className="min-w-0 flex-1 leading-tight">
-            <p className="truncate text-xs font-medium">{name}</p>
+            {ready ? <p className="truncate text-xs font-medium">{name}</p> : (
+              <span role="status" aria-label="Loading account" className="block h-3 w-24 rounded bg-muted" />
+            )}
             {user?.email ? (
               <p className="truncate text-2xs text-muted-foreground">{user.email}</p>
             ) : null}
