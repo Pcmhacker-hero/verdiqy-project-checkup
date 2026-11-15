@@ -18,6 +18,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { cn } from "@/lib/utils";
 import { CodeforcesAvatar } from "@/components/app/cf-avatar";
+import { rankColor } from "@/lib/cf-rating";
 
 export const Route = createFileRoute("/compare")({
   head: () => ({
@@ -156,17 +157,6 @@ async function fetchProfile(handle: string): Promise<ProfileStats> {
 
 // ---------- helpers ----------
 
-function rankColor(rank?: string, rating?: number) {
-  const r = rating ?? 0;
-  if (r >= 3000 || rank?.includes("legendary")) return "text-red-500";
-  if (r >= 2400 || rank?.includes("grandmaster")) return "text-red-400";
-  if (r >= 2100 || rank?.includes("master")) return "text-orange-400";
-  if (r >= 1900 || rank?.includes("candidate")) return "text-fuchsia-400";
-  if (r >= 1600 || rank?.includes("expert")) return "text-blue-400";
-  if (r >= 1400 || rank?.includes("specialist")) return "text-cyan-400";
-  if (r >= 1200 || rank?.includes("pupil")) return "text-emerald-400";
-  return "text-muted-foreground";
-}
 
 // ---------- page ----------
 

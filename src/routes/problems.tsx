@@ -54,6 +54,7 @@ import {
   type CFJourney,
   type CFSolvedProblem,
 } from "@/lib/cf-dashboard.functions";
+import { ratingColor } from "@/lib/cf-rating";
 
 export const Route = createFileRoute("/problems")({
   head: () => ({
@@ -1291,15 +1292,6 @@ function SolvedRow({ p }: { p: CFSolvedProblem }) {
   );
 }
 
-function ratingColor(r: number): string {
-  if (r >= 2400) return "text-red-500";
-  if (r >= 2100) return "text-orange-500";
-  if (r >= 1900) return "text-purple-500";
-  if (r >= 1600) return "text-blue-500";
-  if (r >= 1400) return "text-cyan-500";
-  if (r >= 1200) return "text-emerald-500";
-  return "text-muted-foreground";
-}
 
 function RatingRange({
   value,
