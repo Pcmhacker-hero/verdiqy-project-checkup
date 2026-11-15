@@ -26,7 +26,18 @@ export function publicWebsiteUrl(value: string): URL {
 }
 
 async function validateDestination(url: URL, signal: AbortSignal) {
-  const answers = await Promise.all(["A", "AAAA"].map(async (type) => {
+  // The local preview cannot reach DoH services; published Workers use fetch only.
+  const answers = import.meta.env.DEV
+    ? await (async () => {
+      const { resolve4, resolve6 } = await import("node:dns/promises");
+      return Promise.all([resolve4(url.hostname), resolve6(url.hostname)].map(async (request) => {
+        try { return await request; } catch (error) {
+          if (error && typeof error === "object" && "code" in error && error.code === "ENODATA") return [];
+          throw error;
+        }
+      }));
+    })()
+    : await Promise.all(["A", "AAAA"].map(async (type) => {
     const response = await fetch(`https://cloudflare-dns.com/dns-query?name=${encodeURIComponent(url.hostname)}&type=${type}`, {
       headers: { Accept: "application/dns-json" }, signal,
     });
@@ -34,7 +45,7 @@ async function validateDestination(url: URL, signal: AbortSignal) {
     const result = await response.json() as { Status: number; Answer?: { type: number; data: string }[] };
     if (result.Status !== 0) throw new Error("Unable to verify website address");
     return (result.Answer ?? []).filter((a) => a.type === 1 || a.type === 28).map((a) => a.data);
-  }));
+    }));
   const addresses = answers.flat();
   if (!addresses.length || !addresses.every(isPublicAddress)) throw new Error("Private website addresses are not allowed");
 }
