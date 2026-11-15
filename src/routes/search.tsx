@@ -505,7 +505,7 @@ function SearchPage() {
         />
 
         {!submitted ? (
-          <div className="mt-8 grid gap-6 md:grid-cols-[1fr_240px]">
+          <div className="mt-8 grid grid-cols-[minmax(0,1fr)] gap-6 md:grid-cols-[minmax(0,1fr)_240px]">
             <SuggestionGrid onPick={run} />
             <RecentPanel items={RECENT} onPick={run} />
           </div>

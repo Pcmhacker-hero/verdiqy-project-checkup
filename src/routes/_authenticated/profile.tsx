@@ -2249,11 +2249,11 @@ function AboutCard({
 
   return (
     <section className="rounded-2xl border border-border bg-card p-5 sm:p-6">
-      <div className="mb-4 flex items-center justify-between">
+      <div className="mb-4 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
         <h2 className="text-lg font-semibold tracking-tight">
           <span className="mr-1.5" aria-hidden>👋</span> About
         </h2>
-        <div className="flex items-center gap-2">
+        <div className="flex flex-wrap items-center gap-2">
           <Button variant="outline" size="sm" onClick={onEdit}>
             <Pencil className="size-3.5" /> Edit Profile
           </Button>
