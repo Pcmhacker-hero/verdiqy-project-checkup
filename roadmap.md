@@ -19,7 +19,7 @@
 
 # Code cleanup (in order)
 - [x] 1. Remove leftovers and limit the Design System page to admins.
-- [ ] 2. Use one shared rating colour across pages.
+- [x] 2. Use one shared rating colour across pages.
 - [ ] 3. Move all Codeforces lookups into one shared place.
 - [ ] 4. Replace silently ignored errors with clear messages.
 - [ ] 5. Split the largest pages into smaller sections.

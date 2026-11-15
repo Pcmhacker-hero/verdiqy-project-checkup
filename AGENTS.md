@@ -39,3 +39,4 @@ use the editor.
 - Public contest data uses the shared query cache with timed refreshes so route changes reuse results; editable profile data uses short-lived caching and mutation invalidation.
 - Sidebar collapse is deferred until after link click handling because removing desktop links during capture forces full-document navigation and discards the shared cache.
 - Admin-only screens (admin section layout and Design System) render through the shared AdminGate with a pending state, so admins never see a denial flash; server functions still verify the admin role themselves.
+- Codeforces rating/rank colours come only from the shared cf-rating helper so pages never disagree on a band.
