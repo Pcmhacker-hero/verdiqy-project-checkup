@@ -1110,7 +1110,7 @@ function RatingChart({ data, height }: { data: typeof ratingHistory; height: num
                 strokeDasharray="3 3"
                 label={{
                   value: b.name,
-                  position: "right",
+                  position: "insideTopRight",
                   fill: b.hex,
                   fontSize: 10,
                   offset: 6,
