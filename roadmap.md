@@ -16,3 +16,13 @@
 - [x] Run regression tests and signed-in checks across main pages and core actions.
 - [x] Fix reproducible issues and verify the affected flows.
 - [x] Deliver a Lovable-removal prompt with migration safeguards and clearly identify unverified services.
+
+# Code cleanup (in order)
+- [x] 1. Remove leftovers and limit the Design System page to admins.
+- [x] 2. Use one shared rating colour across pages.
+- [ ] 3. Move all Codeforces lookups into one shared place.
+- [ ] 4. Replace silently ignored errors with clear messages.
+- [ ] 5. Split the largest pages into smaller sections.
+- [ ] 6. Use theme colours instead of fixed colours; restore type checks.
+- [ ] 7. Add tests for sign-in, Codeforces analysis, contests and sheets.
+- [ ] 8. Connect or label the sample-data pages (Inbox, Notifications, Community, Mistakes).

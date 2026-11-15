@@ -28,6 +28,7 @@ import { Slider } from "@/components/ui/slider";
 import { Switch } from "@/components/ui/switch";
 import { Badge } from "@/components/ui/badge";
 import { cn } from "@/lib/utils";
+import { ratingColor } from "@/lib/cf-rating";
 
 export const Route = createFileRoute("/simulator")({
   head: () => ({
@@ -1197,13 +1198,4 @@ function formatTime(s: number): string {
   return `${pad(mm)}:${pad(sec)}`;
 }
 
-function ratingColor(r: number): string {
-  if (r < 1200) return "text-muted-foreground";
-  if (r < 1400) return "text-emerald-500";
-  if (r < 1600) return "text-cyan-500";
-  if (r < 1900) return "text-blue-500";
-  if (r < 2100) return "text-violet-500";
-  if (r < 2400) return "text-amber-500";
-  return "text-rose-500";
-}
 
