@@ -1,6 +1,5 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { useIsAdmin } from "@/hooks/use-is-admin";
-import { supabase } from "@/integrations/supabase/client";
+import { AdminGate } from "@/components/app/admin-gate";
 
 import { useEffect, useMemo, useState } from "react";
 import {
@@ -106,7 +105,7 @@ export const Route = createFileRoute("/design-system")({
     { property: "og:type", content: "website" },
     { name: "twitter:card", content: "summary_large_image" },
   ] }),
-  component: DesignSystemPage,
+  component: DesignSystemRoute,
 });
 
 /* ------------------------------------------------------------
@@ -255,6 +254,14 @@ const rows = [
 /* ------------------------------------------------------------
  * Page
  * ------------------------------------------------------------ */
+
+function DesignSystemRoute() {
+  return (
+    <AdminGate>
+      <DesignSystemPage />
+    </AdminGate>
+  );
+}
 
 function DesignSystemPage() {
   return (
