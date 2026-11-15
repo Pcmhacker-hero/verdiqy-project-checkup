@@ -383,7 +383,7 @@ function DesktopSidebar({
   onReportBug: () => void;
 }) {
   const handleSidebarClickCapture = (event: MouseEvent<HTMLElement>) => {
-    if (shouldAutoCloseSidebar(event.target)) onCollapse();
+    if (shouldAutoCloseSidebar(event.target)) scheduleSidebarClose(onCollapse);
   };
 
   const handleOpenCommand = () => {

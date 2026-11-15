@@ -1,3 +1,8 @@
+# Speed and phone-layout review
+- [x] Fix clipped content on narrow phones across Home, Contests, Community, and Sheets.
+- [x] Reuse contest and profile data during navigation instead of unnecessary repeat loading.
+- [x] Verify main pages on phones and desktop, including signed-in navigation.
+
 # Project website previews
 - [x] Retrieve social images safely for saved website links.
 - [x] Show previews on project cards and verify novixui.com signed in.

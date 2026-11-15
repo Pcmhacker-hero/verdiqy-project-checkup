@@ -778,7 +778,7 @@ function ResourceCard({
               </span>
             </div>
 
-            <div className="mt-4 flex items-center gap-1 border-t border-border/60 pt-3">
+            <div className="mt-4 flex flex-wrap items-center gap-1 border-t border-border/60 pt-3">
               <Action
                 icon={Heart}
                 label={formatCount(likeCount)}
@@ -824,7 +824,7 @@ function ResourceCard({
                 }}
               />
 
-              <div className="ml-auto flex items-center gap-1.5">
+              <div className="flex w-full shrink-0 items-center justify-end gap-1.5 pt-1 sm:ml-auto sm:w-auto sm:pt-0">
                 <Button
                   size="sm"
                   variant={following ? "outline" : "ghost"}

@@ -166,7 +166,7 @@ function RootComponent() {
       queryClient.clear();
     }
     void router.invalidate();
-    if (event !== "SIGNED_OUT") void queryClient.invalidateQueries();
+    if (event !== "SIGNED_OUT") void queryClient.invalidateQueries({ predicate: (query) => query.meta?.publicData !== true });
   }, [router, queryClient]);
 
   return (
