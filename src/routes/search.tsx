@@ -803,14 +803,14 @@ function SuggestionGrid({ onPick }: { onPick: (q: string) => void }) {
       <p className="mb-2 px-1 font-mono text-2xs uppercase tracking-[0.14em] text-muted-foreground">
         Try asking
       </p>
-      <ul className="grid gap-2 sm:grid-cols-2">
+      <ul className="grid grid-cols-[minmax(0,1fr)] gap-2 sm:grid-cols-2">
         {SUGGESTION_META.map((s) => {
           const Icon = s.icon;
           return (
-            <li key={s.q}>
-              <button
+            <li key={s.q} className="min-w-0">
+              <Button variant="outline"
                 onClick={() => onPick(s.q)}
-                className="group flex w-full items-start gap-3 rounded-xl border border-border/70 bg-background p-3 text-left transition-all hover:border-primary/40 hover:bg-surface-muted/40"
+                className="group flex h-auto w-full min-w-0 items-start gap-3 whitespace-normal rounded-xl border border-border/70 bg-background p-3 text-left transition-all hover:border-primary/40 hover:bg-surface-muted/40"
               >
                 <span
                   className={cn(
@@ -825,7 +825,7 @@ function SuggestionGrid({ onPick }: { onPick: (q: string) => void }) {
                   <span className="mt-0.5 block text-2xs text-muted-foreground">{s.hint}</span>
                 </span>
                 <ArrowUpRight className="mt-1 size-3.5 shrink-0 text-muted-foreground/60 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5 group-hover:text-primary" />
-              </button>
+              </Button>
             </li>
           );
         })}
