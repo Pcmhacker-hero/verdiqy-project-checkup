@@ -4,6 +4,7 @@ import leetcodeMark from "@/assets/leetcode-mark.png.asset.json";
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { supabase } from "@/integrations/supabase/client";
 import { useEffect, useMemo, useRef, useState } from "react";
+import { useQuery } from "@tanstack/react-query";
 import {
   Bell,
   BellRing,
@@ -293,9 +294,17 @@ function ContestsPage() {
     }
     return true;
   };
-  const [contests, setContests] = useState<Contest[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
+  const contestQuery = useQuery({
+    queryKey: ["public-contests"],
+    queryFn: fetchContests,
+    staleTime: 15 * 60 * 1000,
+    refetchInterval: 15 * 60 * 1000,
+    retry: 1,
+  });
+  const contests = contestQuery.data ?? [];
+  const loading = contestQuery.isPending;
+  const error = contestQuery.error?.message ?? null;
+  const load = () => { void contestQuery.refetch(); };
   const [now, setNow] = useState(Date.now());
 
   // filters
@@ -323,27 +332,6 @@ function ContestsPage() {
 
   // details modal
   const [openContest, setOpenContest] = useState<Contest | null>(null);
-
-  // load / refresh
-  const load = async () => {
-    setLoading(true);
-    setError(null);
-    try {
-      const c = await fetchContests();
-      setContests(c);
-    } catch (e) {
-      setError(e instanceof Error ? e.message : "Failed to load contests");
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  useEffect(() => {
-    load();
-    // auto-refresh every 15 min
-    const id = window.setInterval(load, 15 * 60 * 1000);
-    return () => window.clearInterval(id);
-  }, []);
 
   // live tick every second for countdowns
   useEffect(() => {
@@ -854,37 +842,37 @@ function CalendarView({
 
   return (
     <div className="rounded-lg border border-border/70 bg-card">
-      <div className="flex items-center justify-between border-b border-border/60 px-4 py-3">
-        <div className="flex items-center gap-2">
-          <button
+      <div className="grid grid-cols-[minmax(0,1fr)_auto] items-center gap-2 border-b border-border/60 px-2 py-3 sm:px-4">
+        <div className="flex min-w-0 items-center justify-center gap-1 sm:justify-start sm:gap-2">
+          <Button variant="outline" size="icon" aria-label="Previous month"
             onClick={() => setMonthCursor(new Date(year, month - 1, 1))}
-            className="grid size-7 place-items-center rounded-md border border-border/70 text-muted-foreground hover:text-foreground"
+            className="size-7 shrink-0"
           >
             <ChevronLeft className="size-4" />
-          </button>
-          <p className="min-w-[9rem] text-center text-sm font-semibold">
+          </Button>
+          <p className="min-w-0 truncate text-center text-xs font-semibold sm:min-w-[9rem] sm:text-sm">
             {monthCursor.toLocaleString(undefined, { month: "long", year: "numeric" })}
           </p>
-          <button
+          <Button variant="outline" size="icon" aria-label="Next month"
             onClick={() => setMonthCursor(new Date(year, month + 1, 1))}
-            className="grid size-7 place-items-center rounded-md border border-border/70 text-muted-foreground hover:text-foreground"
+            className="size-7 shrink-0"
           >
             <ChevronRight className="size-4" />
-          </button>
+          </Button>
         </div>
-        <button
+        <Button variant="ghost" size="sm"
           onClick={() => {
             const d = new Date();
             setMonthCursor(new Date(d.getFullYear(), d.getMonth(), 1));
           }}
-          className="text-2xs text-primary hover:underline"
+          className="h-7 shrink-0 px-1 text-2xs text-primary sm:px-2"
         >
           Today
-        </button>
+        </Button>
       </div>
       <div className="grid grid-cols-7 border-b border-border/60 text-2xs font-medium uppercase tracking-[0.12em] text-muted-foreground">
         {["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"].map((d) => (
-          <div key={d} className="px-2 py-2 text-center">
+          <div key={d} className="min-w-0 px-0.5 py-2 text-center sm:px-2">
             {d}
           </div>
         ))}
@@ -905,7 +893,7 @@ function CalendarView({
             <div
               key={i}
               className={cn(
-                "min-h-[132px] sm:min-h-[150px] lg:min-h-[168px] border-b border-r border-border/40 p-2 space-y-1.5",
+                "min-w-0 min-h-[132px] sm:min-h-[150px] lg:min-h-[168px] border-b border-r border-border/40 p-0.5 sm:p-2 space-y-1.5",
                 isToday && "bg-primary/5",
               )}
             >
@@ -920,12 +908,12 @@ function CalendarView({
               {items.slice(0, 3).map((c) => {
                 const meta = PLATFORM_META[c.platform];
                 return (
-                  <button
+                  <Button variant="outline"
                     key={c.id}
                     onClick={() => onOpen(c)}
                     title={`${c.name} · ${formatHM(c.start)} · ${c.platform}`}
                     className={cn(
-                      "group/tile flex w-full items-center gap-1.5 rounded-md border px-2 py-1.5 text-left text-xs font-semibold transition-transform hover:scale-[1.03] hover:shadow-md",
+                      "group/tile flex h-auto w-full min-w-0 items-center justify-center gap-1 rounded-md border px-0.5 py-1.5 text-left text-xs font-semibold sm:justify-start sm:gap-1.5 sm:px-2",
                       meta.border,
                       meta.tileBg,
                       meta.color,
@@ -957,8 +945,8 @@ function CalendarView({
                         {meta.short}
                       </span>
                     </span>
-                    <span className="min-w-0 flex-1 truncate">{c.name}</span>
-                  </button>
+                    <span className="hidden min-w-0 flex-1 truncate sm:block">{c.name}</span>
+                  </Button>
                 );
               })}
               {items.length > 3 ? (

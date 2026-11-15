@@ -266,7 +266,7 @@ function ProfilePage() {
   const syncedHandleRef = useRef<string | null>(null);
   const queryClient = useQueryClient();
   const syncSubmissionsFn = useServerFn(syncUserSubmissions);
-  const profileQuery = useQuery({ queryKey: ["my-profile"], queryFn: () => getMyProfile() });
+  const profileQuery = useQuery({ queryKey: ["my-profile"], queryFn: () => getMyProfile(), staleTime: 60 * 1000 });
   const p = profileQuery.data;
   const hasHandle = !!p?.codeforces_handle;
   const dashboardQuery = useQuery({

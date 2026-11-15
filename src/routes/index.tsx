@@ -186,7 +186,7 @@ function Hero() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.9, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
-          className="mt-6 font-display text-5xl font-semibold leading-[1.05] tracking-tight text-[rgb(var(--lp-ink))] [text-shadow:0_10px_40px_rgba(0,0,0,0.35)] sm:text-6xl md:text-7xl"
+          className="mt-6 break-words font-display text-4xl font-semibold leading-[1.05] tracking-tight text-[rgb(var(--lp-ink))] [text-shadow:0_10px_40px_rgba(0,0,0,0.35)] sm:text-6xl md:text-7xl"
         >
           Master Codeforces,
           <br />

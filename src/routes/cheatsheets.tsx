@@ -1542,7 +1542,7 @@ function SavedSheetsBox() {
 
   return (
     <div className="rounded-2xl border border-border/60 bg-background/60 p-4 shadow-sm">
-      <div className="mb-3 flex items-center justify-between gap-3">
+      <div className="mb-3 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
         <div>
           <div className="text-2xs font-medium uppercase tracking-widest text-muted-foreground">
             Your saved sheets
@@ -1551,7 +1551,7 @@ function SavedSheetsBox() {
             My Cheat Library {sheets.length ? <span className="text-muted-foreground">({sheets.length})</span> : null}
           </h2>
         </div>
-        <div className="flex items-center gap-2">
+        <div className="flex flex-wrap items-center gap-2">
           <Button
             size="sm"
             variant="outline"
@@ -1566,9 +1566,9 @@ function SavedSheetsBox() {
             ) : null}
           </Button>
           <Button asChild size="sm" variant="outline" className="h-8 gap-1.5">
-            <a href="/problems">
+            <Link to="/problems">
               <Sparkles className="size-3.5" /> Create new sheet
-            </a>
+            </Link>
           </Button>
         </div>
       </div>
