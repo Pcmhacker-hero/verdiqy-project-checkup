@@ -120,7 +120,6 @@ const navSections: NavSection[] = [
 const ADMIN_NAV: NavItem = { label: "Admin", to: "/admin", icon: Gauge, shortcut: "G D", key: "d" };
 const DESIGN_SYSTEM_NAV: NavItem = { label: "Design System", to: "/design-system", icon: Layers };
 
-const isDev = import.meta.env.DEV;
 let sidebarCollapsedPreference = false;
 const SIDEBAR_COLLAPSED_STORAGE_KEY = "verdiqy-sidebar-collapsed";
 const SIGN_OUT_REDIRECT_DELAY_MS = 900;
@@ -154,7 +153,7 @@ function shouldAutoCloseSidebar(target: EventTarget | null) {
 function buildSecondaryNav(isAdmin: boolean): NavItem[] {
   const items: NavItem[] = [];
   if (isAdmin) items.push(ADMIN_NAV);
-  if (isAdmin || isDev) items.push(DESIGN_SYSTEM_NAV);
+  if (isAdmin) items.push(DESIGN_SYSTEM_NAV);
   return items;
 }
 

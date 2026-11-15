@@ -7,7 +7,6 @@ import {
   Loader2,
   Play,
   Save,
-  Search,
   Shuffle,
   Sparkles,
   Tag,
@@ -1208,5 +1207,3 @@ function ratingColor(r: number): string {
   return "text-rose-500";
 }
 
-// silence unused-import warnings for icons kept for future use
-export const _icons = { Search };

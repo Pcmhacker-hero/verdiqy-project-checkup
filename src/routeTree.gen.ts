@@ -29,6 +29,7 @@ import { Route as AuthenticatedNotificationsRouteImport } from './routes/_authen
 import { Route as AuthenticatedProfileRouteImport } from './routes/_authenticated/profile'
 import { Route as SheetsSheetIdRouteImport } from './routes/sheets.$sheetId'
 import { Route as UHandleRouteImport } from './routes/u.$handle'
+import { Route as AuthenticatedAdminIndexRouteImport } from './routes/_authenticated/admin.index'
 import { Route as AuthenticatedAdminBugReportsRouteImport } from './routes/_authenticated/admin.bug-reports'
 import { Route as AuthenticatedSettingsProfileRouteImport } from './routes/_authenticated/settings.profile'
 import { Route as ApiPublicCfAvatarRouteImport } from './routes/api/public/cf-avatar'
@@ -133,6 +134,11 @@ const UHandleRoute = UHandleRouteImport.update({
   path: '/u/$handle',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AuthenticatedAdminIndexRoute = AuthenticatedAdminIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => AuthenticatedAdminRoute,
+} as any)
 const AuthenticatedAdminBugReportsRoute =
   AuthenticatedAdminBugReportsRouteImport.update({
     id: '/bug-reports',
@@ -174,6 +180,7 @@ export interface FileRoutesByFullPath {
   '/admin/bug-reports': typeof AuthenticatedAdminBugReportsRoute
   '/settings/profile': typeof AuthenticatedSettingsProfileRoute
   '/api/public/cf-avatar': typeof ApiPublicCfAvatarRoute
+  '/admin/': typeof AuthenticatedAdminIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -188,7 +195,6 @@ export interface FileRoutesByTo {
   '/search': typeof SearchRoute
   '/simulator': typeof SimulatorRoute
   '/videos': typeof VideosRoute
-  '/admin': typeof AuthenticatedAdminRouteWithChildren
   '/inbox': typeof AuthenticatedInboxRoute
   '/mistakes': typeof AuthenticatedMistakesRoute
   '/notifications': typeof AuthenticatedNotificationsRoute
@@ -198,6 +204,7 @@ export interface FileRoutesByTo {
   '/admin/bug-reports': typeof AuthenticatedAdminBugReportsRoute
   '/settings/profile': typeof AuthenticatedSettingsProfileRoute
   '/api/public/cf-avatar': typeof ApiPublicCfAvatarRoute
+  '/admin': typeof AuthenticatedAdminIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -224,6 +231,7 @@ export interface FileRoutesById {
   '/_authenticated/admin/bug-reports': typeof AuthenticatedAdminBugReportsRoute
   '/_authenticated/settings/profile': typeof AuthenticatedSettingsProfileRoute
   '/api/public/cf-avatar': typeof ApiPublicCfAvatarRoute
+  '/_authenticated/admin/': typeof AuthenticatedAdminIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -250,6 +258,7 @@ export interface FileRouteTypes {
     | '/admin/bug-reports'
     | '/settings/profile'
     | '/api/public/cf-avatar'
+    | '/admin/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -264,7 +273,6 @@ export interface FileRouteTypes {
     | '/search'
     | '/simulator'
     | '/videos'
-    | '/admin'
     | '/inbox'
     | '/mistakes'
     | '/notifications'
@@ -274,6 +282,7 @@ export interface FileRouteTypes {
     | '/admin/bug-reports'
     | '/settings/profile'
     | '/api/public/cf-avatar'
+    | '/admin'
   id:
     | '__root__'
     | '/'
@@ -299,6 +308,7 @@ export interface FileRouteTypes {
     | '/_authenticated/admin/bug-reports'
     | '/_authenticated/settings/profile'
     | '/api/public/cf-avatar'
+    | '/_authenticated/admin/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -462,6 +472,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof UHandleRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/_authenticated/admin/': {
+      id: '/_authenticated/admin/'
+      path: '/'
+      fullPath: '/admin/'
+      preLoaderRoute: typeof AuthenticatedAdminIndexRouteImport
+      parentRoute: typeof AuthenticatedAdminRoute
+    }
     '/_authenticated/admin/bug-reports': {
       id: '/_authenticated/admin/bug-reports'
       path: '/bug-reports'
@@ -488,10 +505,12 @@ declare module '@tanstack/react-router' {
 
 interface AuthenticatedAdminRouteChildren {
   AuthenticatedAdminBugReportsRoute: typeof AuthenticatedAdminBugReportsRoute
+  AuthenticatedAdminIndexRoute: typeof AuthenticatedAdminIndexRoute
 }
 
 const AuthenticatedAdminRouteChildren: AuthenticatedAdminRouteChildren = {
   AuthenticatedAdminBugReportsRoute: AuthenticatedAdminBugReportsRoute,
+  AuthenticatedAdminIndexRoute: AuthenticatedAdminIndexRoute,
 }
 
 const AuthenticatedAdminRouteWithChildren =

@@ -1,8 +1,7 @@
-import { createFileRoute, Link } from "@tanstack/react-router";
-import { useIsAdmin } from "@/hooks/use-is-admin";
-import { supabase } from "@/integrations/supabase/client";
+import { createFileRoute } from "@tanstack/react-router";
+import { AdminGate } from "@/components/app/admin-gate";
 
-import { useEffect, useMemo, useState } from "react";
+import { useMemo, useState } from "react";
 import {
   ArrowUpRight,
   Bell,
@@ -106,7 +105,7 @@ export const Route = createFileRoute("/design-system")({
     { property: "og:type", content: "website" },
     { name: "twitter:card", content: "summary_large_image" },
   ] }),
-  component: DesignSystemPage,
+  component: DesignSystemRoute,
 });
 
 /* ------------------------------------------------------------
@@ -256,38 +255,15 @@ const rows = [
  * Page
  * ------------------------------------------------------------ */
 
+function DesignSystemRoute() {
+  return (
+    <AdminGate>
+      <DesignSystemPage />
+    </AdminGate>
+  );
+}
+
 function DesignSystemPage() {
-  const isAdmin = useIsAdmin();
-  const [checked, setChecked] = useState(false);
-  const [signedIn, setSignedIn] = useState(false);
-  useEffect(() => {
-    supabase.auth.getUser().then(({ data }) => {
-      setSignedIn(!!data.user);
-      setChecked(true);
-    });
-  }, []);
-  if (!checked) {
-    return (
-      <div className="min-h-screen bg-background text-foreground grid place-items-center text-sm text-muted-foreground">
-        Checking access…
-      </div>
-    );
-  }
-  if (!signedIn || !isAdmin) {
-    return (
-      <div className="min-h-screen bg-background text-foreground grid place-items-center px-6">
-        <div className="max-w-md text-center space-y-4">
-          <h1 className="text-2xl font-semibold tracking-tight">Admins only</h1>
-          <p className="text-sm text-muted-foreground">
-            The design system is restricted to workspace admins.
-          </p>
-          <Button asChild size="sm">
-            <Link to="/">Back to home</Link>
-          </Button>
-        </div>
-      </div>
-    );
-  }
   return (
     <div className="min-h-screen bg-background text-foreground">
       <TopBar />
