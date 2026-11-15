@@ -296,6 +296,7 @@ function ContestsPage() {
   };
   const contestQuery = useQuery({
     queryKey: ["public-contests"],
+    meta: { publicData: true },
     queryFn: fetchContests,
     staleTime: 15 * 60 * 1000,
     refetchInterval: 15 * 60 * 1000,
