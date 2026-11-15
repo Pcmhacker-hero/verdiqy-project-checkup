@@ -257,37 +257,6 @@ const rows = [
  * ------------------------------------------------------------ */
 
 function DesignSystemPage() {
-  const isAdmin = useIsAdmin();
-  const [checked, setChecked] = useState(false);
-  const [signedIn, setSignedIn] = useState(false);
-  useEffect(() => {
-    supabase.auth.getUser().then(({ data }) => {
-      setSignedIn(!!data.user);
-      setChecked(true);
-    });
-  }, []);
-  if (!checked) {
-    return (
-      <div className="min-h-screen bg-background text-foreground grid place-items-center text-sm text-muted-foreground">
-        Checking access…
-      </div>
-    );
-  }
-  if (!signedIn || !isAdmin) {
-    return (
-      <div className="min-h-screen bg-background text-foreground grid place-items-center px-6">
-        <div className="max-w-md text-center space-y-4">
-          <h1 className="text-2xl font-semibold tracking-tight">Admins only</h1>
-          <p className="text-sm text-muted-foreground">
-            The design system is restricted to workspace admins.
-          </p>
-          <Button asChild size="sm">
-            <Link to="/">Back to home</Link>
-          </Button>
-        </div>
-      </div>
-    );
-  }
   return (
     <div className="min-h-screen bg-background text-foreground">
       <TopBar />
