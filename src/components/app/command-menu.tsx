@@ -46,7 +46,6 @@ export function CommandMenu({
 }) {
   const navigate = useNavigate();
   const isAdmin = useIsAdmin();
-  const isDev = import.meta.env.DEV;
   const go = (to: string) => {
     onOpenChange(false);
     navigate({ to });
@@ -164,7 +163,7 @@ export function CommandMenu({
                   <CommandShortcut>G D</CommandShortcut>
                 </CommandItem>
               ) : null}
-              {isAdmin || isDev ? (
+              {isAdmin ? (
                 <CommandItem onSelect={() => go("/design-system")}>
                   <Layers className="size-4" /> Design system
                 </CommandItem>
