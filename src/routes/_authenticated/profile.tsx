@@ -63,6 +63,7 @@ import {
 } from "recharts";
 
 import { AppShell } from "@/components/app/app-shell";
+import { ProjectPreview } from "@/components/app/project-preview";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -2700,6 +2701,7 @@ function ExperienceProjectsCard() {
             const t = PROJECT_TYPES.find((x) => x.id === p.type) ?? PROJECT_TYPES[4];
             return (
               <div key={p.id} className="group rounded-xl border border-border/70 bg-gradient-to-br from-background to-surface-muted/40 p-4">
+                {p.website ? <ProjectPreview key={p.website} website={p.website} title={p.title} /> : null}
                 <div className="flex items-start justify-between gap-3">
                   <div className="flex items-start gap-3 min-w-0">
                     <span className={cn("grid size-10 shrink-0 place-items-center rounded-lg ring-1 text-base font-semibold", t.tint)} aria-hidden>{t.icon}</span>

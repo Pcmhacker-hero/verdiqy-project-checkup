@@ -1,4 +1,9 @@
 # Loading improvements
+# Project website previews
+- [ ] Retrieve social images safely for saved website links.
+- [ ] Show previews on project cards and verify novixui.com signed in.
+
+# Loading improvements
 - [x] Keep account display across page/sidebar changes and distinguish pending sign-in from guests.
 - [x] Prioritize and optimize visible images; recover stalled Codeforces pictures.
 - [x] Verify signed-in navigation, images, and regression tests.
