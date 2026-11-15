@@ -82,6 +82,7 @@ import { Label } from "@/components/ui/label";
 import { Kbd } from "@/components/ds/kbd";
 import { cn } from "@/lib/utils";
 import { seededRandom } from "@/lib/rand";
+import { normalizeProjectLink } from "@/lib/project-link";
 import { supabase } from "@/integrations/supabase/client";
 import {
   getMyProfile,
@@ -2786,10 +2787,19 @@ function AddProjectDialog({ open, onOpenChange, onAdd }: { open: boolean; onOpen
       toast.error("Please enter a project title");
       return;
     }
+    let githubLink: string;
+    let websiteLink: string;
+    try {
+      githubLink = normalizeProjectLink(github);
+      websiteLink = normalizeProjectLink(website);
+    } catch {
+      toast.error("Please enter valid GitHub and live project links");
+      return;
+    }
     onAdd({
       id: crypto.randomUUID(),
       title: title.trim(),
-      hosted, github: github.trim(), website: website.trim(),
+      hosted, github: githubLink, website: websiteLink,
       isJob, company: company.trim(),
       startDate, endDate,
       type: type || "general",
@@ -2833,18 +2843,16 @@ function AddProjectDialog({ open, onOpenChange, onAdd }: { open: boolean; onOpen
             <YesNo value={hosted} onChange={setHosted} />
           </div>
 
-          {hosted === "yes" ? (
-            <div className="grid gap-4 sm:grid-cols-2">
-              <div className="grid gap-1.5">
-                <Label htmlFor="proj-gh">Github</Label>
-                <Input id="proj-gh" placeholder="Github" value={github} onChange={(e) => setGithub(e.target.value)} />
-              </div>
-              <div className="grid gap-1.5">
-                <Label htmlFor="proj-web">Website</Label>
-                <Input id="proj-web" placeholder="Website" value={website} onChange={(e) => setWebsite(e.target.value)} />
-              </div>
+          <div className="grid gap-4 sm:grid-cols-2">
+            <div className="grid gap-1.5">
+              <Label htmlFor="proj-gh">GitHub link (optional)</Label>
+              <Input id="proj-gh" type="url" placeholder="https://github.com/username/project" value={github} onChange={(e) => setGithub(e.target.value)} />
             </div>
-          ) : null}
+            <div className="grid gap-1.5">
+              <Label htmlFor="proj-web">Live project link (optional)</Label>
+              <Input id="proj-web" type="url" placeholder="https://your-project.com" value={website} onChange={(e) => setWebsite(e.target.value)} />
+            </div>
+          </div>
 
           <div className="flex flex-wrap items-center justify-between gap-3">
             <span className="text-sm">Was this part of a job/Internship?</span>
