@@ -37,3 +37,4 @@ use the editor.
 - Profile project links use the browser-safe project-link helper before saving to normalize web URLs and reject executable schemes.
 - Project social previews use an authenticated server function with public-address DNS checks, validated redirects, and bounded HTML reads; cards share cached metadata and show a domain fallback when images are unavailable.
 - Public contest data uses the shared query cache with timed refreshes so route changes reuse results; editable profile data uses short-lived caching and mutation invalidation.
+- Sidebar collapse is deferred until after link click handling because removing desktop links during capture forces full-document navigation and discards the shared cache.
