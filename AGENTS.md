@@ -35,3 +35,4 @@ use the editor.
 - Sidebar keyboard shortcuts are matched by the browser-safe sidebar-shortcut helper and handled in AppShell, keeping desktop collapse and mobile drawer toggles together without intercepting text editing.
 - Search uses the root-scoped current-user readiness for display routing and a tested search-access decision; server authentication remains authoritative, avoiding duplicate session reads and stalled signed-out screens.
 - Profile project links use the browser-safe project-link helper before saving to normalize web URLs and reject executable schemes.
+- Project social previews use an authenticated server function with public-address DNS checks, validated redirects, and bounded HTML reads; cards share cached metadata and show a domain fallback when images are unavailable.
